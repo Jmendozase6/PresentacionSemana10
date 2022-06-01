@@ -198,19 +198,19 @@ public class FrmListaCircularSemana10 extends javax.swing.JFrame {
 
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        lcd.agregarAlFinal(new Persona(jtxtNombre.getText().trim(),
-                jtxtApePaterno.getText().trim(), jtxtApePaterno.getText().trim(),
-                jcbxEstadoCivil.getSelectedItem().toString(), jrbMasculino.isSelected() ? "Hombre" : "Mujer",
-                Double.parseDouble(jtxtAltura.getText()), Integer.parseInt(jtxtDni.getText()),
-                Byte.parseByte(jtxtEdad.getText()), Byte.parseByte(jSpinner1.getValue().toString())));
-        lcd.vaciarTabla(modelo, jTable1.getRowCount());
-        lcd.mostrarListaTabla(modelo);
+//        lcd.agregarAlFinal(new Persona(jtxtNombre.getText().trim(),
+//                jtxtApePaterno.getText().trim(), jtxtApePaterno.getText().trim(),
+//                jcbxEstadoCivil.getSelectedItem().toString(), jrbMasculino.isSelected() ? "Hombre" : "Mujer",
+//                Double.parseDouble(jtxtAltura.getText()), Integer.parseInt(jtxtDni.getText()),
+//                Byte.parseByte(jtxtEdad.getText()), Byte.parseByte(jSpinner1.getValue().toString())));
+//        lcd.vaciarTabla(modelo, jTable1.getRowCount());
+//        lcd.mostrarListaTabla(modelo);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        lcd.ordenar();
+//        lcd.ordenar();
         lcd.vaciarTabla(modelo, jTable1.getRowCount());
-        lcd.mostrarListaTabla(modelo);
+//        lcd.mostrarListaTabla(modelo);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

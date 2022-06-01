@@ -172,7 +172,7 @@ public class Combobox<E> extends JComboBox<E> {
                     scroll.setBackground(Color.WHITE);
                     ScrollBarCustom sb = new ScrollBarCustom();
                     sb.setUnitIncrement(30);
-                    sb.setForeground(new Color(255, 255, 255));
+                    sb.setForeground(new Color(42, 143, 136));
                     scroll.setVerticalScrollBar(sb);
                     return scroll;
                 }

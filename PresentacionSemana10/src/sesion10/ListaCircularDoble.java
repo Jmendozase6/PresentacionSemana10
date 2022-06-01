@@ -4,6 +4,7 @@
  */
 package sesion10;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -65,22 +66,42 @@ public class ListaCircularDoble {
 
     /**
      *
+     * @param opcion
      * @return
      */
-    public String ordenar() {
+    public String ordenar(int opcion) {
         Nodo actual = inicio, posterior;
-        byte auxiliar;
+        Persona auxiliar;
         if (estaVacia()) {
             return "La lista circular está vacía";
         } else {
             while (actual.getSiguiente() != inicio) {
                 posterior = actual.getSiguiente();
                 while (posterior != inicio) {
-                    if (actual.getPersona().getEdad() > posterior.getPersona().getEdad()) {
-                        auxiliar = actual.getPersona().getEdad();
-                        actual.getPersona().setEdad(posterior.getPersona().getEdad());
-                        posterior.getPersona().setEdad(auxiliar);
+                    switch (opcion) {
+                        case 0 -> {
+                            if (actual.getPersona().getEdad() > posterior.getPersona().getEdad()) {
+                                auxiliar = actual.getPersona();
+                                actual.setPersona(posterior.getPersona());
+                                posterior.setPersona(auxiliar);
+                            }
+                        }
+                        case 1 -> {
+                            if (actual.getPersona().getDNI() > posterior.getPersona().getDNI()) {
+                                auxiliar = actual.getPersona();
+                                actual.setPersona(posterior.getPersona());
+                                posterior.setPersona(auxiliar);
+                            }
+                        }
+                        case 2 -> {
+                            if (actual.getPersona().getId() > posterior.getPersona().getId()) {
+                                auxiliar = actual.getPersona();
+                                actual.setPersona(posterior.getPersona());
+                                posterior.setPersona(auxiliar);
+                            }
+                        }
                     }
+
                     posterior = posterior.getSiguiente();
                 }
                 actual = actual.getSiguiente();
@@ -94,18 +115,18 @@ public class ListaCircularDoble {
      * @param DNI
      * @return
      */
-    public boolean buscar(int DNI) {
+    public Nodo buscar(int DNI) {
         Nodo temp = inicio;
-        boolean encontrado = false;
+        Nodo retornar = null;
 
         do {
             if (temp.getPersona().getDNI() == DNI) {
-                encontrado = true;
+                retornar = temp;
             }
             temp = temp.getSiguiente();
         } while (temp != inicio);
 
-        return encontrado;
+        return retornar;
     }
 
     /**
@@ -120,32 +141,105 @@ public class ListaCircularDoble {
     }
 
     public void mostrarListaTabla(DefaultTableModel modelo) {
-        String nombre, apellidoPaterno, apellidoMaterno, estadoCivil, sexo, altura, DNI, edad, cantidadDeHijos;
+        String id, nombre, apellidoPaterno, apellidoMaterno, estadoCivil, sexo, fechaNacimiento, altura, DNI, edad, cantidadDeHijos;
 
         Nodo temp;
 
+//        try {
         if (!estaVacia()) {
             temp = inicio;
 
             do {
-
+                System.out.println(temp.getPersona().getNombre());
+                System.out.println(temp.getPersona().getId());
+                id = String.valueOf(temp.getPersona().getId());
                 nombre = temp.getPersona().getNombre();
                 apellidoPaterno = temp.getPersona().getApellidoPaterno();
                 apellidoMaterno = temp.getPersona().getApellidoMaterno();
                 estadoCivil = temp.getPersona().getEstadoCivil();
                 sexo = temp.getPersona().getSexo();
+                fechaNacimiento = temp.getPersona().getFechaNacimiento();
                 altura = String.valueOf(temp.getPersona().getAltura());
                 DNI = String.valueOf(temp.getPersona().getDNI());
                 edad = String.valueOf(temp.getPersona().getEdad());
                 cantidadDeHijos = String.valueOf(temp.getPersona().getCantidadDeHijos());
-                Object[] fila = {nombre, apellidoPaterno, apellidoMaterno, estadoCivil, sexo, altura, DNI, edad, cantidadDeHijos};
+                Object[] fila = {id, nombre, apellidoPaterno, apellidoMaterno, estadoCivil, sexo, fechaNacimiento, altura, DNI, edad, cantidadDeHijos};
                 modelo.addRow(fila);
 
                 temp = temp.getSiguiente();
 
             } while (temp != inicio);
         }
+//        } catch (NullPointerException e) {
+//            System.err.println("Mostrar lista tabla 1 " + e.getStackTrace());
+//            System.err.println("Mostrar lista tabla 2 " + e.getMessage());
+//            System.err.println("Mostrar lista tabla 3 " + e);
+//        }
 
+    }
+
+    public void eliminarAlInicio() {
+        if (inicio == fin) {
+            inicio = fin = null;
+        } else {
+            inicio = inicio.getSiguiente();
+            inicio.setAnterior(null);
+            fin.setSiguiente(inicio);
+        }
+    }
+
+    public void eliminarDelFinal() {
+        if (inicio == fin) {
+            inicio = fin = null;
+        } else {
+            fin = fin.getAnterior();
+            fin.setSiguiente(inicio);
+            inicio.setAnterior(fin);
+        }
+    }
+
+    public void eliminarNodoEspecifico(byte id) {
+        if (!estaVacia()) {
+            Nodo actual = inicio, anterior = fin;
+
+            do {
+                if (actual.getPersona().getId() == id) {
+                    if (actual == inicio) {
+                        inicio = inicio.getSiguiente();
+                        fin.setSiguiente(inicio);
+                        inicio.setAnterior(fin);
+                    } else if (actual == fin) {
+                        fin = anterior;
+                        inicio.setAnterior(fin);
+                        fin.setSiguiente(inicio);
+                    } else {
+                        anterior.setSiguiente(actual.getSiguiente());
+                        actual.getSiguiente().setAnterior(anterior);
+                    }
+                }
+                anterior = actual;
+                actual = actual.getSiguiente();
+            } while (actual != inicio);
+        } else {
+            JOptionPane.showMessageDialog(null, "La lista ahora está vacía");
+        }
+
+    }
+
+    public Nodo getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(Nodo inicio) {
+        this.inicio = inicio;
+    }
+
+    public Nodo getFin() {
+        return fin;
+    }
+
+    public void setFin(Nodo fin) {
+        this.fin = fin;
     }
 
 }

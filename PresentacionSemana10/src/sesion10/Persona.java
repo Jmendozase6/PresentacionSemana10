@@ -15,29 +15,41 @@ public class Persona {
     private String apellidoMaterno;
     private String estadoCivil;
     private String sexo;
+    private String fechaNacimiento;
     private double altura;
+    private byte id;
     private int DNI;
     private byte edad;
     private byte cantidadDeHijos;
 
-    public Persona(String nombre, String apellidoPaterno, String apellidoMaterno, String estadoCivil, String sexo, double altura, int DNI, byte edad, byte cantidadDeHijos) {
+    public Persona(byte id, String nombre, String apellidoPaterno, String apellidoMaterno, String estadoCivil, String sexo, String fechaNacimiento, double altura, int DNI, byte edad, byte cantidadDeHijos) {
+        this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.estadoCivil = estadoCivil;
         this.sexo = sexo;
+        this.fechaNacimiento = fechaNacimiento;
         this.altura = altura;
         this.DNI = DNI;
         this.edad = edad;
         this.cantidadDeHijos = cantidadDeHijos;
     }
 
-    public byte getCantidadDeHijos() {
-        return cantidadDeHijos;
+    public byte getId() {
+        return id;
     }
 
-    public void setCantidadDeHijos(byte cantidadDeHijos) {
-        this.cantidadDeHijos = cantidadDeHijos;
+    public void setId(byte id) {
+        this.id = id;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getNombre() {
@@ -76,7 +88,7 @@ public class Persona {
         return sexo;
     }
 
-    public void setFechaNacimiento(String sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 
@@ -104,10 +116,19 @@ public class Persona {
         this.edad = edad;
     }
 
+    public byte getCantidadDeHijos() {
+        return cantidadDeHijos;
+    }
+
+    public void setCantidadDeHijos(byte cantidadDeHijos) {
+        this.cantidadDeHijos = cantidadDeHijos;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Persona{");
+        sb.append("id=").append(id);
         sb.append("nombre=").append(nombre);
         sb.append(", apellidoPaterno=").append(apellidoPaterno);
         sb.append(", apellidoMaterno=").append(apellidoMaterno);
