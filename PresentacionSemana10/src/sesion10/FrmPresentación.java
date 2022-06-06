@@ -1,6 +1,8 @@
 package sesion10;
 
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 public class FrmPresentación extends javax.swing.JFrame {
 
@@ -11,12 +13,43 @@ public class FrmPresentación extends javax.swing.JFrame {
     private String[][] data;
     private byte codigo = 1;
     private Nodo encontrado, desplazar;
+    private final TableColumnModel COLUMN_MODEL;
 
     public FrmPresentación() {
         initComponents();
         modelo = new DefaultTableModel(data, cabecera);
+        COLUMN_MODEL = jtblDatos.getColumnModel();
         jtblDatos.setModel(modelo);
         utilidades.calendar(dateChooser);
+        utilidades.alinearCeldas(jtblDatos, SwingConstants.CENTER);
+        utilidades.AnchoCeldas(COLUMN_MODEL);
+    }
+
+    private void limpiarCampos() {
+        jtxtNombre.setText("");
+        jtxtApellidoPaterno.setText("");
+        jtxtApellidoMaterno.setText("");
+        jcbxEstadoCivil.setSelectedIndex(0);
+        jtxtFechaNacimiento.setText("");
+        jtxtAltura.setText("");
+        jtxtDNI.setText("");
+        jtxtEdad.setText("");
+        jspnCantidadHijos.setValue(0);
+    }
+
+    private boolean dniValido() {
+        return jtxtDNI.getText().trim().length() == 8;
+    }
+
+    private boolean validarCampos() {
+        return !(jtxtNombre.getText().isBlank()
+                || jtxtApellidoPaterno.getText().isBlank()
+                || jtxtApellidoMaterno.getText().isBlank()
+                || jtxtFechaNacimiento.getText().isBlank()
+                || jtxtAltura.getText().isBlank()
+                || jtxtDNI.getText().isBlank()
+                || jtxtEdad.getText().isBlank()
+                || !(jrbHombre.isSelected() || jrbMujer.isSelected()));
     }
 
     private void mostrarDesplazando() {
@@ -83,11 +116,7 @@ public class FrmPresentación extends javax.swing.JFrame {
         dateChooser.setTextRefernce(jtxtFechaNacimiento);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
+        setTitle("LISTA CIRCULAR DOBLE - PRESENTACIÓN SEMANA 10 - GRUPO 8");
 
         jPanel1.setBackground(new java.awt.Color(24, 24, 24));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -144,6 +173,11 @@ public class FrmPresentación extends javax.swing.JFrame {
         jtxtAltura.setFont(new java.awt.Font("Josefin Sans Light", 0, 16)); // NOI18N
         jtxtAltura.setLabelText("Altura");
         jtxtAltura.setLineColor(new java.awt.Color(42, 143, 136));
+        jtxtAltura.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtAlturaKeyTyped(evt);
+            }
+        });
         jPanel1.add(jtxtAltura, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 300, 60));
 
         jtxtDNI.setBackground(new java.awt.Color(24, 24, 24));
@@ -152,6 +186,11 @@ public class FrmPresentación extends javax.swing.JFrame {
         jtxtDNI.setFont(new java.awt.Font("Josefin Sans Light", 0, 16)); // NOI18N
         jtxtDNI.setLabelText("DNI");
         jtxtDNI.setLineColor(new java.awt.Color(42, 143, 136));
+        jtxtDNI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtDNIKeyTyped(evt);
+            }
+        });
         jPanel1.add(jtxtDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, 300, 60));
 
         jtxtEdad.setBackground(new java.awt.Color(24, 24, 24));
@@ -160,15 +199,21 @@ public class FrmPresentación extends javax.swing.JFrame {
         jtxtEdad.setFont(new java.awt.Font("Josefin Sans Light", 0, 16)); // NOI18N
         jtxtEdad.setLabelText("Edad");
         jtxtEdad.setLineColor(new java.awt.Color(42, 143, 136));
+        jtxtEdad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtEdadKeyTyped(evt);
+            }
+        });
         jPanel1.add(jtxtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 590, 300, 60));
 
         jlblMensaje.setFont(new java.awt.Font("Josefin Sans Light", 0, 16)); // NOI18N
         jlblMensaje.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jlblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 340, 870, 20));
+        jPanel1.add(jlblMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 330, 870, 20));
 
         jspnCantidadHijos.setBackground(new java.awt.Color(24, 24, 24));
         jspnCantidadHijos.setBorder(null);
         jspnCantidadHijos.setForeground(new java.awt.Color(255, 255, 255));
+        jspnCantidadHijos.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         jspnCantidadHijos.setFont(new java.awt.Font("Josefin Sans Light", 0, 16)); // NOI18N
         jspnCantidadHijos.setLabelText("Cantidad de Hijos");
         jPanel1.add(jspnCantidadHijos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 660, 300, 60));
@@ -434,10 +479,12 @@ public class FrmPresentación extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jcbxEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(eliminarJtxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jbtnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(eliminarJtxtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                        .addGap(9, 9, 9)))
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
@@ -454,10 +501,12 @@ public class FrmPresentación extends javax.swing.JFrame {
 
         jtxtFechaNacimiento.setBackground(new java.awt.Color(24, 24, 24));
         jtxtFechaNacimiento.setForeground(new java.awt.Color(255, 255, 255));
+        jtxtFechaNacimiento.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        jtxtFechaNacimiento.setText("");
         jtxtFechaNacimiento.setFont(new java.awt.Font("Josefin Sans Light", 0, 16)); // NOI18N
         jtxtFechaNacimiento.setLabelText("Fecha de Nacimiento");
         jtxtFechaNacimiento.setLineColor(new java.awt.Color(42, 143, 136));
-        jtxtFechaNacimiento.setMargin(new java.awt.Insets(2, 6, 0, 6));
+        jtxtFechaNacimiento.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jPanel1.add(jtxtFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 200, 60));
 
         jbtnMostrarCalendario.setBackground(new java.awt.Color(53, 211, 164));
@@ -476,15 +525,13 @@ public class FrmPresentación extends javax.swing.JFrame {
 
         jtblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
+        jtblDatos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jtblDatos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 370, 920, 360));
@@ -514,35 +561,35 @@ public class FrmPresentación extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnMostrarCalendarioActionPerformed
 
     private void jbtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAgregarActionPerformed
-        if (jcbxAgregar.getSelectedIndex() == 0) {
-            lista.agregarAlInicio(new Persona(
-                    codigo++,
-                    jtxtNombre.getText().trim(),
-                    jtxtApellidoPaterno.getText().trim(),
-                    jtxtApellidoMaterno.getText().trim(),
-                    jcbxEstadoCivil.getSelectedItem().toString(),
-                    jrbHombre.isSelected() ? "Hombre" : "Mujer",
-                    jtxtFechaNacimiento.getText(),
-                    Double.parseDouble(jtxtAltura.getText()),
-                    Integer.parseInt(jtxtDNI.getText()),
-                    Byte.parseByte(jtxtEdad.getText()),
-                    Byte.parseByte(jspnCantidadHijos.getValue().toString())));
+        if (validarCampos()) {
+            if (dniValido()) {
+                Persona persona = new Persona(
+                        codigo++,
+                        jtxtNombre.getText().trim(),
+                        jtxtApellidoPaterno.getText().trim(),
+                        jtxtApellidoMaterno.getText().trim(),
+                        jcbxEstadoCivil.getSelectedItem().toString(),
+                        jrbHombre.isSelected() ? "Hombre" : "Mujer",
+                        jtxtFechaNacimiento.getText(),
+                        Double.parseDouble(jtxtAltura.getText()),
+                        Integer.parseInt(jtxtDNI.getText()),
+                        Byte.parseByte(jtxtEdad.getText()),
+                        Byte.parseByte(jspnCantidadHijos.getValue().toString()));
+                if (jcbxAgregar.getSelectedIndex() == 0) {
+                    lista.agregarAlInicio(persona);
+                } else {
+                    lista.agregarAlFinal(persona);
+                }
+                jlblMensaje.setText("");
+                limpiarCampos();
+            } else {
+                jlblMensaje.setText("La longitud del DNI es incorrecta");
+            }
+            lista.vaciarTabla(modelo, jtblDatos.getRowCount());
+            lista.mostrarListaTabla(modelo);
         } else {
-            lista.agregarAlFinal(new Persona(
-                    codigo++,
-                    jtxtNombre.getText().trim(),
-                    jtxtApellidoPaterno.getText().trim(),
-                    jtxtApellidoMaterno.getText().trim(),
-                    jcbxEstadoCivil.getSelectedItem().toString(),
-                    jrbHombre.isSelected() ? "Hombre" : "Mujer",
-                    jtxtFechaNacimiento.getText(),
-                    Double.parseDouble(jtxtAltura.getText()),
-                    Integer.parseInt(jtxtDNI.getText()),
-                    Byte.parseByte(jtxtEdad.getText()),
-                    Byte.parseByte(jspnCantidadHijos.getValue().toString())));
+            jlblMensaje.setText("Debes rellenar todos los campos");
         }
-        lista.vaciarTabla(modelo, jtblDatos.getRowCount());
-        lista.mostrarListaTabla(modelo);
     }//GEN-LAST:event_jbtnAgregarActionPerformed
 
     private void jbtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBuscarActionPerformed
@@ -561,10 +608,11 @@ public class FrmPresentación extends javax.swing.JFrame {
             jtxtEdad.setText(String.valueOf(encontrado.getPersona().getEdad()));
             jspnCantidadHijos.setValue(encontrado.getPersona().getCantidadDeHijos());
             jlblMensaje.setText("");
-//            utilidades.habilitar(materialTabbed1);
+            buscarJtxtCodigo.setText("");
         } catch (NullPointerException e) {
             jlblMensaje.setText("No se encontró un registro con ese DNI");
         }
+
     }//GEN-LAST:event_jbtnBuscarActionPerformed
 
     private void jbtnOrdenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnOrdenarActionPerformed
@@ -578,7 +626,8 @@ public class FrmPresentación extends javax.swing.JFrame {
             jlblMensaje.setText("Se empezó a desplazar la lista");
             desplazar = lista.getInicio();
             mostrarDesplazando();
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            jlblMensaje.setText("Error - La lista está vacía");
         }
     }//GEN-LAST:event_jbtnDesplazarEmpezarActionPerformed
 
@@ -613,14 +662,25 @@ public class FrmPresentación extends javax.swing.JFrame {
             default ->
                 throw new AssertionError();
         }
-//        utilidades.deshabilitar(materialTabbed1);
+        eliminarJtxtCodigo.setText("");
         lista.vaciarTabla(modelo, jtblDatos.getRowCount());
         lista.mostrarListaTabla(modelo);
     }//GEN-LAST:event_jbtnEliminarActionPerformed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-//        utilidades.deshabilitar(materialTabbed1);
-    }//GEN-LAST:event_formWindowOpened
+    private void jtxtAlturaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtAlturaKeyTyped
+        if (!Character.isDigit(evt.getKeyChar()))
+            evt.consume();
+    }//GEN-LAST:event_jtxtAlturaKeyTyped
+
+    private void jtxtDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtDNIKeyTyped
+        if (!Character.isDigit(evt.getKeyChar()))
+            evt.consume();
+    }//GEN-LAST:event_jtxtDNIKeyTyped
+
+    private void jtxtEdadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtEdadKeyTyped
+        if (!Character.isDigit(evt.getKeyChar()))
+            evt.consume();
+    }//GEN-LAST:event_jtxtEdadKeyTyped
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

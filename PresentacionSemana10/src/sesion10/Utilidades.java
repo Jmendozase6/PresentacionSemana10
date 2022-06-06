@@ -26,7 +26,7 @@ public class Utilidades {
         });
     }
 
-    public static void alinearCeldas(JTable table, int alignment) {
+    protected void alinearCeldas(JTable table, int alignment) {
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(alignment);
 
@@ -37,16 +37,18 @@ public class Utilidades {
         }
     }
 
-    private void AnchoCeldas(TableColumnModel modelo) {
-        modelo.getColumn(0).setPreferredWidth(70);  //ID
-        modelo.getColumn(1).setPreferredWidth(200); //Nombres
-        modelo.getColumn(2).setPreferredWidth(180); //Ape. Paterno
-        modelo.getColumn(3).setPreferredWidth(180); //Ape. Materno
-        modelo.getColumn(4).setPreferredWidth(150); //Sueldo Base
-        modelo.getColumn(5).setPreferredWidth(150); //Ventas Realizadas
-        modelo.getColumn(6).setPreferredWidth(140); //Estado Civil
-        modelo.getColumn(7).setPreferredWidth(130); //Número de hijo
-        modelo.getColumn(8).setPreferredWidth(150); //Sueldo Neto
+    protected void AnchoCeldas(TableColumnModel modelo) {
+        modelo.getColumn(0).setPreferredWidth(30);
+        modelo.getColumn(1).setPreferredWidth(100);
+        modelo.getColumn(2).setPreferredWidth(100);
+        modelo.getColumn(3).setPreferredWidth(100);
+        modelo.getColumn(4).setPreferredWidth(100);
+        modelo.getColumn(5).setPreferredWidth(70);
+        modelo.getColumn(6).setPreferredWidth(100);
+        modelo.getColumn(7).setPreferredWidth(50);
+        modelo.getColumn(8).setPreferredWidth(80);
+        modelo.getColumn(9).setPreferredWidth(40);
+        modelo.getColumn(10).setPreferredWidth(100);
     }
 
 }
